@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>PSP ktor DAM 24/25</title>
+    <script type="application/javascript">
+        function fetchAndDisplayEmployees() {
+            console.log("-----------------------------------------");
+            fetchEmployees()
+                .then(employees => {
+                    console.log("Promesa resuelta con los empleados:", employees);
+                    displayEmployees(employees);
+                })
+        }
+
+        function fetchEmployees() {
+            return fetch(
+                "/user",
+                {
+                    headers: { 'Accept': 'application/json' }
+                }
+            ).then(resp => {
+                console.log("Estado de la respuesta HTTP:", resp.status);
+                console.log("Encabezados de la respuesta:", resp.headers);
+                return resp.json();
+            })
+        }
+
+        function displayEmployees(employees) {
+            console.log("Dentro de display:", employees);
+            const employeesTableBody = document.getElementById("employeesTableBody");
+            employees.forEach(user => {
+                const newRow = employeeRow(user);
+                employeesTableBody.appendChild(newRow);
+            })
+        }
+
+        function employeeRow(user) {
+            return tr([
+                td(user.name || "N/A"),
+                td(user.dni || "00000000A"),
+                td(user.description || "No description"),
+                td(user.salary || "0")
+
+        ]);
+        }
+
+        function tr(children) {
+            const node = document.createElement("tr");
+            children.forEach(child => node.appendChild(child));
+            return node;
+        }
+
+        function td(text) {
+            const node = document.createElement("td");
+            node.appendChild(document.createTextNode(text));
+            return node;
+        }
+    </script>
+</head>
+<body>
+<h1>Ejemplo de cliente para probar los get PSP 24/25 Virgen del Carmen.</h1>
+<form action="javascript:fetchAndDisplayEmployees()">
+    <input type="submit" value="Ver empleados PSP 24/25">
+</form>
+<table>
+    <thead>
+    <tr><th>Name</th><th>Description</th><th>Salary</th></tr>
+    </thead>
+    <tbody id="employeesTableBody">
+    </tbody>
+</table>
+</body>
+</html>
