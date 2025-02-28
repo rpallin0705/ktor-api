@@ -6,9 +6,9 @@ services:
       - "3306:3306"
     environment:
       MYSQL_DATABASE: db
-      MYSQL_USER: rafa  # usuario santi
-      MYSQL_PASSWORD: rafa # contraseña del usuario santi
-      MYSQL_ROOT_PASSWORD: root # contraseña del root
+      MYSQL_USER: rafa
+      MYSQL_PASSWORD: rafa
+      MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./dump:/docker-entrypoint-initdb.d
       - ./conf:/etc/mysql/conf.d
