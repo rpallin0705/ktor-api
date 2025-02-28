@@ -37,8 +37,8 @@ Lo volveré a resumir:
  2.- Necesito mapear cada dato de la tabla, a un atributo de la clase UserDao, porque un UserDao lo utiliza Exposed para mapear el objeto
  completo.
 
- Objeto EmployeDato --> Exposed--> Registro en la Tabla
- Objeto EmployeeDato <-- Exposed <-- Registtro en la Tabla
+ Objeto UserDato --> Exposed--> Registro en la Tabla
+ Objeto UserDato <-- Exposed <-- Registtro en la Tabla
  */
 class UserDao (id : EntityID<Int>) :  IntEntity(id){
     companion object : IntEntityClass<UserDao>(UserTable) //heredamos todos los métodos estáticos de acceso a los datos de la BBDD

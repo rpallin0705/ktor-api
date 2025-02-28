@@ -1,4 +1,4 @@
-CREATE TABLE Employee
+CREATE TABLE User
 (
     id       INT AUTO_INCREMENT PRIMARY KEY,
     /* dni VARCHAR(20) UNIQUE NOT NULL,*/
@@ -9,7 +9,7 @@ CREATE TABLE Employee
 ENGINE
 =InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='tabla de empleados';
 
-INSERT INTO Employee (id, name, password, token)
+INSERT INTO User (id, name, password, token)
 VALUES (1, 'Juan Pérez', '$2a$12$nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK', ''),
        (2, 'María López', '$2a$12$jkxtj76TpGMKlhzH/FjX6./f4uZ8EWD.fJunzhWdS1PbYebRSd1P6', ''),
        (3, 'Carlos Sánchez', '$2a$12$h7OELt9pBczNOP/FYnlo4OBJsDyd47CYFVzyTEiFgqc5eER/1fyNq', ''),

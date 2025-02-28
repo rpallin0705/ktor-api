@@ -2,16 +2,16 @@
 <head>
     <title>PSP ktor DAM 24/25</title>
     <script type="application/javascript">
-        function fetchAndDisplayEmployees() {
+        function fetchAndDisplayUsers() {
             console.log("-----------------------------------------");
-            fetchEmployees()
-                .then(employees => {
-                    console.log("Promesa resuelta con los empleados:", employees);
-                    displayEmployees(employees);
+            fetchUsers()
+                .then(users => {
+                    console.log("Promesa resuelta con los empleados:", users);
+                    displayUsers(users);
                 })
         }
 
-        function fetchEmployees() {
+        function fetchUsers() {
             return fetch(
                 "/user",
                 {
@@ -24,16 +24,16 @@
             })
         }
 
-        function displayEmployees(employees) {
-            console.log("Dentro de display:", employees);
-            const employeesTableBody = document.getElementById("employeesTableBody");
-            employees.forEach(user => {
-                const newRow = employeeRow(user);
-                employeesTableBody.appendChild(newRow);
+        function displayUsers(users) {
+            console.log("Dentro de display:", users);
+            const usersTableBody = document.getElementById("usersTableBody");
+            users.forEach(user => {
+                const newRow = userRow(user);
+                usersTableBody.appendChild(newRow);
             })
         }
 
-        function employeeRow(user) {
+        function userRow(user) {
             return tr([
                 td(user.name || "N/A"),
                 td(user.dni || "00000000A"),
@@ -58,14 +58,14 @@
 </head>
 <body>
 <h1>Ejemplo de cliente para probar los get PSP 24/25 Virgen del Carmen.</h1>
-<form action="javascript:fetchAndDisplayEmployees()">
+<form action="javascript:fetchAndDisplayUsers()">
     <input type="submit" value="Ver empleados PSP 24/25">
 </form>
 <table>
     <thead>
     <tr><th>Name</th><th>Description</th><th>Salary</th></tr>
     </thead>
-    <tbody id="employeesTableBody">
+    <tbody id="usersTableBody">
     </tbody>
 </table>
 </body>

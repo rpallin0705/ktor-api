@@ -7,7 +7,7 @@ services:
             - "33306:3306"
         command: --default-authentication-plugin=mysql_native_password
         environment:
-            MYSQL_DATABASE: dbEmployee
+            MYSQL_DATABASE: db
             MYSQL_USER: rafa  #usuario santi
             MYSQL_PASSWORD: rafa #contraseña del usuario santi
             MYSQL_ROOT_PASSWORD: root #contraseña del root

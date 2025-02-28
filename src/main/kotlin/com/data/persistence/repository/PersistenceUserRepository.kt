@@ -80,14 +80,14 @@ class PersistenceUserRepository: UserInterface {
 
 
 
-    override suspend fun updateUser(employee: UpdateUser, name: String): Boolean {
+    override suspend fun updateUser(user: UpdateUser, name: String): Boolean {
         var num = 0
         try {
             suspendTransaction {
                 num = UserTable
                     .update({ UserTable.name eq name }) { stm ->
-                        employee.name?.let { stm[this.name] = it }
-                        employee.token?.let { stm[token] = it }
+                        user.name?.let { stm[this.name] = it }
+                        user.token?.let { stm[token] = it }
 
                     }
             }
@@ -108,11 +108,11 @@ class PersistenceUserRepository: UserInterface {
 
     //método que a partir de
     override suspend fun login(name: String, pass: String): Boolean {
-        val employee = getUserByName(name)?: return false
+        val user = getUserByName(name)?: return false
 
         return try{
             val posibleHash = PasswordHash.hash(pass) //hasheo la password del logueo
-            posibleHash == employee.password //compruebo con la que hay en la BBDD
+            posibleHash == user.password //compruebo con la que hay en la BBDD
         }catch (e: Exception){
             println("Error en la autenticación: ${e.localizedMessage}")
             false
@@ -124,14 +124,14 @@ class PersistenceUserRepository: UserInterface {
 
 
      */
-    override suspend fun register(employee: UpdateUser): User? {
+    override suspend fun register(user: UpdateUser): User? {
 
         return try {
             suspendTransaction {
                 UserDao.new {
-                    this.name = employee.name!! //es seguro.
-                    this.password = PasswordHash.hash(employee.password!!) //hasheo la password.
-                    this.token = employee.token!!
+                    this.name = user.name!! //es seguro.
+                    this.password = PasswordHash.hash(user.password!!) //hasheo la password.
+                    this.token = user.token!!
                 }
             }.let {
                 UserDaoToUser(it) //hago directamente el mapping.

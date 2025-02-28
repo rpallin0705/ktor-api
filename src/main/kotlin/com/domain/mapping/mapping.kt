@@ -16,11 +16,11 @@ fun UserDaoToUser(userDao: UserDao): User {
 }
 
 
-fun UpdateUserToUser(employee: UpdateUser): User {
+fun UpdateUserToUser(user: UpdateUser): User {
     var e = User(
-        employee.name!!,
-        employee.password!!,
-        employee.token ?: ""
+        user.name!!,
+        user.password!!,
+        user.token ?: ""
     )
     return e
 }

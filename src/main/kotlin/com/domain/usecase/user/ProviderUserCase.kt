@@ -43,12 +43,12 @@ object ProviderUserCase {
 
 
 
-    suspend fun insertUser(employee: User?) : Boolean{
-        if (employee == null){
+    suspend fun insertUser(user: User?) : Boolean{
+        if (user == null){
             logger.warn( "No existen datos del empleado a insertar")
             return false
         }
-        insertUserUseCase.user = employee
+        insertUserUseCase.user = user
         val res = insertUserUseCase()
             return if (!res){
             logger.warn("No se ha insertado el empleado. Posiblemente ya exista")

@@ -15,11 +15,11 @@ interface UserInterface {
 
     suspend fun postUser(user: User) : Boolean
 
-    suspend fun updateUser(employee: UpdateUser, dni:String) : Boolean
+    suspend fun updateUser(user: UpdateUser, dni:String) : Boolean
 
     suspend fun deleteUser(dni : String) : Boolean
 
     suspend fun login(dni: String, pass: String) : Boolean  //más adelante, implementaré con token
 
-    suspend fun register(employee: UpdateUser) : User? //Este será el que utilicemos para el registro
+    suspend fun register(user: UpdateUser) : User? //Este será el que utilicemos para el registro
 }

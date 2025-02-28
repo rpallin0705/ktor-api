@@ -15,26 +15,20 @@ class MemoryUserRepository : UserInterface {
         return UserData.listUser
     }
 
-
-
-
     override suspend fun getUserByName(name: String): User? {
         return UserData.listUser.first { it.name == name }
     }
 
-
-
-    override suspend fun postUser(employee: User) : Boolean{
-        val emp = getUserByName(employee.name
+    override suspend fun postUser(user: User) : Boolean{
+        val emp = getUserByName(user.name
         )
         return if (emp!= null) {
             false
         } else{
-                UserData.listUser.add(employee)
+                UserData.listUser.add(user)
                 true
             }
     }
-
 
     /*
     Buscamos el empleado a modificar y sobreescribimos el mismo objeto con los datos modificados.
@@ -71,7 +65,7 @@ class MemoryUserRepository : UserInterface {
         TODO("Not yet implemented")
     }
 
-    override suspend fun register(employee: UpdateUser): User? {
+    override suspend fun register(user: UpdateUser): User? {
         TODO("Not yet implemented")
     }
 }
