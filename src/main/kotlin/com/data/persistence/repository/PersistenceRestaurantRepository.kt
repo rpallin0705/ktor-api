@@ -26,8 +26,17 @@ class PersistenceRestaurantRepository : RestaurantInterface {
         }
     }
 
+    override suspend fun findRestaurantByName(name: String): Restaurant? {
+        return suspendTransaction {
+            RestaurantDao.find { RestaurantTable.name eq name }
+                .limit(1)
+                .map(::RestaurantDaoToRestaurant)
+                .firstOrNull()
+        }
+    }
+
     override suspend fun insertNewRestaurant(restaurant: Restaurant): Boolean {
-        val em = findRestaurantById(restaurant.id!!)
+        val em = findRestaurantByName(restaurant.name)
         return if (em == null) {
             suspendTransaction {
                 RestaurantDao.new {
@@ -57,9 +66,9 @@ class PersistenceRestaurantRepository : RestaurantInterface {
             suspendTransaction {
                 num = RestaurantTable
                     .update({ RestaurantTable.id eq id }) { stm ->
-                        updateRestaurant.name?.let { stm[this.name] = it }
-                        updateRestaurant.address?.let { stm[this.address] = it }
-                        updateRestaurant.phone?.let { stm[this.phone] = it }
+                        updateRestaurant.name.let { stm[this.name] = it }
+                        updateRestaurant.address.let { stm[this.address] = it }
+                        updateRestaurant.phone.let { stm[this.phone] = it }
                         updateRestaurant.description?.let { stm[this.description] = it }
                         updateRestaurant.rating?.let { stm[this.rating] = it }
                         updateRestaurant.image?.let { stm[this.image] = it }

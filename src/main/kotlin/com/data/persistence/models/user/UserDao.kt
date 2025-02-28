@@ -9,6 +9,4 @@ class UserDao (id : EntityID<Int>) :  IntEntity(id){
     var name by UserTable.name
     var password by UserTable.password
     var token by UserTable.token
-
-
 }

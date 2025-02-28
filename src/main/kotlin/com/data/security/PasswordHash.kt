@@ -7,9 +7,9 @@ import java.security.MessageDigest
 object PasswordHash :  PasswordHashInterface{
 
         override fun hash(pass: String): String {
-            val passArr = pass.toByteArray() //convierto la password a array
-            val messageDigest = MessageDigest.getInstance("SHA-256") //Objeto que me hasheará
-            val hashByte : ByteArray = messageDigest.digest(passArr) //Ya tengo el hash en un array de bytes.
+            val passArr = pass.toByteArray()
+            val messageDigest = MessageDigest.getInstance("SHA-256")
+            val hashByte : ByteArray = messageDigest.digest(passArr)
             val hashHex = hashByte.joinToString("") { "%02x".format(it) }
             return hashHex
         }

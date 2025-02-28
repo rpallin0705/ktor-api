@@ -8,9 +8,6 @@ class InsertUserUseCase  (val repository : UserInterface){
     var user : User? = null
 
     suspend operator fun invoke() : Boolean {
-        /*
-        Si devuelve null, es que ya existe el empleado
-         */
         return if (user == null) {
             false
         }else {

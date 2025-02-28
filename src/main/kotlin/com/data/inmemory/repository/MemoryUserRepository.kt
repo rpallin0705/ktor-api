@@ -6,9 +6,6 @@ import com.domain.models.User
 import com.domain.models.UpdateUser
 import com.domain.repository.UserInterface
 
-/*
-Marca el acceso a datos dependiendo del contrato. Será la implementación de acceso a Memoria.
- */
 class MemoryUserRepository : UserInterface {
 
     override suspend fun getAllUsers(): List<User> {
@@ -30,11 +27,6 @@ class MemoryUserRepository : UserInterface {
             }
     }
 
-    /*
-    Buscamos el empleado a modificar y sobreescribimos el mismo objeto con los datos modificados.
-    Para ello, utilizamos el método copy que tiene cualquier objeto.
-    Os recuerdo que el copy, vuelve a referenciar al objeto, por eso hay que sobreescribirlo en la lista.
-     */
     override suspend fun updateUser(updateUser: UpdateUser, name:String) : Boolean{
         val index = UserData.listUser.indexOfFirst { it.name == name }
         return if (index != -1) {

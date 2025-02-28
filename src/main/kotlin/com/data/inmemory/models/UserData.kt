@@ -2,10 +2,6 @@ package com.data.inmemory.models
 
 import com.domain.models.User
 
-/*
-Simulamos nuestro repositorio de datos. Aquí tendremos la lista de datos.
-Lo tendremos para la incorporación de los test.
- */
 object UserData {
     val listUser = mutableListOf<User>(
         User(

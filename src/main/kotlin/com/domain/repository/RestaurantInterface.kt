@@ -8,5 +8,5 @@ interface RestaurantInterface {
     suspend fun insertNewRestaurant(restaurant: Restaurant) : Boolean
     suspend fun deleteRestaurantById( id : Long) : Boolean
     suspend fun updateRestaurantById( id : Long, updateRestaurant: Restaurant) :  Boolean
-
+    suspend fun findRestaurantByName(name: String): Restaurant?
 }

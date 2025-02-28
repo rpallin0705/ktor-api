@@ -9,11 +9,9 @@ import org.slf4j.LoggerFactory
 
 object ProviderUserCase {
 
-   // private val repository = MemoryUserRepository()  //me creo el repositorio con todos los datos. Lo hago una sóla vez.
     private val repository = PersistenceUserRepository()
     val logger: Logger = LoggerFactory.getLogger("UserUseCaseLogger")
 
-    //Aquí tengo todos los casos de uso.
     private val getAllUserUseCase = GetAllUserUsersCase(repository)
     private val getUserByNameUseCase = GetUserByNameUseCase(repository)
     private val updateUserUseCase = UpdateUserUseCase(repository)
@@ -24,7 +22,7 @@ object ProviderUserCase {
 
 
 
-    suspend fun getAllUsers() = getAllUserUseCase()  //Lo invoco, como si fuera una función.
+    suspend fun getAllUsers() = getAllUserUseCase()
 
     suspend fun getUserByName(name : String) : User? {
         if (name.isBlank()){

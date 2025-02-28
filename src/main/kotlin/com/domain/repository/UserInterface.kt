@@ -14,7 +14,7 @@ interface UserInterface {
 
     suspend fun deleteUser(name : String) : Boolean
 
-    suspend fun login(name: String, pass: String) : Boolean  //más adelante, implementaré con token
+    suspend fun login(name: String, pass: String) : Boolean
 
-    suspend fun register(user: UpdateUser) : User? //Este será el que utilicemos para el registro
+    suspend fun register(user: UpdateUser) : User?
 }

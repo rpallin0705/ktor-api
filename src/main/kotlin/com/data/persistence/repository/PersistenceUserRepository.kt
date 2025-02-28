@@ -39,7 +39,7 @@ class PersistenceUserRepository: UserInterface {
             suspendTransaction {
                 UserDao.new {
                     this.name = user.name
-                    this.password = PasswordHash.hash(user.password) //hasheo la password.
+                    this.password = PasswordHash.hash(user.password)
                     this.token = user.token
                 }
             }
@@ -55,8 +55,7 @@ class PersistenceUserRepository: UserInterface {
                 num = UserTable
                     .update({ UserTable.name eq name }) { stm ->
                         user.name?.let { stm[this.name] = it }
-                        user.token?.let { stm[token] = it }
-
+                        user.password?.let { stm[password] = it }
                     }
             }
 
@@ -66,7 +65,6 @@ class PersistenceUserRepository: UserInterface {
         }
         return num == 1
     }
-
 
     override suspend fun deleteUser(name: String): Boolean = suspendTransaction {
         val num = UserTable
@@ -92,7 +90,7 @@ class PersistenceUserRepository: UserInterface {
             suspendTransaction {
                 UserDao.new {
                     this.name = user.name!!
-                    this.password = PasswordHash.hash(user.password!!) //hasheo la password.
+                    this.password = PasswordHash.hash(user.password!!)
                     this.token = user.token!!
                 }
             }.let {
