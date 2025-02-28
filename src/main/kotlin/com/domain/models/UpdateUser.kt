@@ -8,7 +8,6 @@ patch
  */
 @Serializable
 data class UpdateUser (
-    //var dni: String? = null,
     var password: String? = null,
     var name: String? = null,
     var token:String ? = null

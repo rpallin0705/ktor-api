@@ -22,17 +22,11 @@ fun Application.userRouting() {
             call.respondText("Hello World!")
         }
 
-
-        /*
-        En esta ruta, comprobamos diferentes parámetros:
-        1.- Que no tenga ningún parámetro. Devuelve todos los usuarios sin filtro.
-        2.- Que le pasemos el dni por query. Devuelve ese usuario . Lo tengo de ejemplo, ya que no debería utilizar una query para un recurso específico.
-        3.- Que le pasemos el salario por query. Devuelve todos los usuarios que tienen dicho salario.
-         */
+        
         get("/user"){
 
-            val userName = call.request.queryParameters["dni"]
-            logger.warn("El Dni tiene de valor $userName")
+            val userName = call.request.queryParameters["name"]
+            logger.warn("El Name tiene de valor $userName")
             if (userName != null) {
                 val user = ProviderUserCase.getUserByName(userName)
                 if (user == null) {
@@ -48,12 +42,12 @@ fun Application.userRouting() {
         /*
         Endpoint que no es recomendable, porque no se debe utilizar parámetros de url para filtrar. Para eso están los de consulta.
          */
-        get("/user/{userDni}") {
+        get("/user/{userName}") {
 
-            //Comprobamos si se ha pasado el dni por parámetro
-            val userName = call.parameters["userDni"]
+            //Comprobamos si se ha pasado el name por parámetro
+            val userName = call.parameters["userName"]
             if (userName == null){
-                call.respond(HttpStatusCode.BadRequest, "Debes pasar el dni a buscar") //Montamos una respuesta con código 400.
+                call.respond(HttpStatusCode.BadRequest, "Debes pasar el name a buscar") //Montamos una respuesta con código 400.
                 return@get  //finalizamos en endpoint y mandamos inmediantamente la respuesta.
             }
 
@@ -88,9 +82,9 @@ fun Application.userRouting() {
 
         }
 
-        patch("/user/{userDni}") {
+        patch("/user/{userName}") {
             try{
-                val name = call.parameters["userDni"]
+                val name = call.parameters["userName"]
                 name?.let{
                     val updateUser = call.receive<UpdateUser>()
                     val res = ProviderUserCase.updateUser(updateUser, name)
@@ -98,7 +92,7 @@ fun Application.userRouting() {
                         call.respond(HttpStatusCode.Conflict, "El usuario no pudo modificarse. Puede que no exista")
                         return@patch //aunque no es necesario, es buena práctica ponerlo para no olvidarlo, pero no hay más lógica.
                     }
-                    call.respond(HttpStatusCode.Created, "Se ha actualizado correctamente con dni =  ${name}")
+                    call.respond(HttpStatusCode.Created, "Se ha actualizado correctamente con name =  ${name}")
                 }?: run{
                     call.respond(HttpStatusCode.BadRequest,"Debes identificar el usuario")
                     return@patch //aunque no es necesario, es buena práctica ponerlo para no olvidarlo, pero no hay más lógica.
@@ -111,9 +105,9 @@ fun Application.userRouting() {
         }
 
 
-        delete("/user/{userDni}") {
-            val name = call.parameters["userDni"]
-            logger.warn("Queremos borrar el usuario con dni $name")
+        delete("/user/{userName}") {
+            val name = call.parameters["userName"]
+            logger.warn("Queremos borrar el usuario con name $name")
             name?.let{
                 val res = ProviderUserCase.deleteUser(name)
                 if (! res){
@@ -138,7 +132,7 @@ fun Application.userRouting() {
             val isLogin = ProviderUserCase.login(loginRequest.name, loginRequest.password)
 
             if (isLogin)
-                call.respond(HttpStatusCode.OK,"Usuario con dni ${loginRequest.name} logueado")
+                call.respond(HttpStatusCode.OK,"Usuario con name ${loginRequest.name} logueado")
             else
                 call.respond(HttpStatusCode.Unauthorized, "Usuario incorrecto")
         }
@@ -149,7 +143,7 @@ fun Application.userRouting() {
                 val register = ProviderUserCase.(user)
 
                 if (register != null)
-                    call.respond(HttpStatusCode.Created, "Se ha insertado correctamente con dni =  ${register.dni}")
+                    call.respond(HttpStatusCode.Created, "Se ha insertado correctamente con name =  ${register.name}")
                 else
                     call.respond(HttpStatusCode.Conflict, "No se ha podido realizar el registro")
             } catch (e : IllegalStateException){

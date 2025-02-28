@@ -58,21 +58,21 @@ object ProviderUserCase {
         }
     }
 
-    suspend fun updateUser(updateUser: UpdateUser?, dni : String) : Boolean{
+    suspend fun updateUser(updateUser: UpdateUser?, name : String) : Boolean{
         if (updateUser == null){
             logger.warn("No existen datos del empleado a actualizar")
             return false
         }
 
         updateUserUseCase.updateUser = updateUser
-        updateUserUseCase.dni = dni
+        updateUserUseCase.name = name
         return updateUserUseCase()
     }
 
-    suspend fun deleteUser(dni : String) : Boolean{
-        deleteUserUseCase.dni = dni
+    suspend fun deleteUser(name : String) : Boolean{
+        deleteUserUseCase.name = name
         return deleteUserUseCase()
     }
 
-    suspend fun login(dni: String?, pass: String?)  = loginUseCase(dni, pass)
+    suspend fun login(name: String?, pass: String?)  = loginUseCase(name, pass)
 }

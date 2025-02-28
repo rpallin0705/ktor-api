@@ -61,7 +61,7 @@ class MemoryUserRepository : UserInterface {
         }
     }
 
-    override suspend fun login(dni: String, pass: String): Boolean {
+    override suspend fun login(name: String, pass: String): Boolean {
         TODO("Not yet implemented")
     }
 

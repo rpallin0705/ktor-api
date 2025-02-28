@@ -13,8 +13,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
  */
 
 object  UserTable: IntIdTable("User") {
-  //  val id = integer("id").autoIncrement()// Clave primaria
-    //val dni = varchar("dni", 20).uniqueIndex() // Campo único
+    //val id = long("id").autoIncrement()
     val name = varchar("name", 100) // Campo opcional
     val password = varchar("password", 255)
     val token = varchar("token", 255).nullable()

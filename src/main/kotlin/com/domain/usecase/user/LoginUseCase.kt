@@ -3,12 +3,12 @@ package com.domain.usecase.user
 import com.domain.repository.UserInterface
 
 class LoginUseCase (val repository : UserInterface){
-    suspend operator fun invoke(dni: String ?, pass:String ?): Boolean {
-        return if (dni.isNullOrBlank() || pass.isNullOrBlank())
+    suspend operator fun invoke(name: String ?, pass:String ?): Boolean {
+        return if (name.isNullOrBlank() || pass.isNullOrBlank())
            false
         else {
             try{
-                val res = repository.login(dni, pass)
+                val res = repository.login(name, pass)
                 res
             }catch (e: Exception){
                 println("Error en login:  ${e.localizedMessage}")

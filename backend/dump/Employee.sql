@@ -1,7 +1,6 @@
 CREATE TABLE User
 (
     id       INT AUTO_INCREMENT PRIMARY KEY,
-    /* dni VARCHAR(20) UNIQUE NOT NULL,*/
     name     VARCHAR(100),
     password VARCHAR(255),
     token    VARCHAR(255)
