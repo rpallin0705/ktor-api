@@ -1,8 +1,8 @@
-package com.data.persistence.models
+package com.data.persistence.models.restaurant
 
 import org.jetbrains.exposed.dao.id.LongIdTable
 
-object RestaurantTable : LongIdTable("restaurant_table") {
+object RestaurantTable : LongIdTable("restaurant") {
     val name = varchar("name", 128).uniqueIndex()
     val address = varchar("address", 255)
     val phone = varchar("phone", 9).uniqueIndex()

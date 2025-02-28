@@ -41,8 +41,6 @@ object ProviderUserCase {
         }
     }
 
-
-
     suspend fun insertUser(user: User?) : Boolean{
         if (user == null){
             logger.warn( "No existen datos del empleado a insertar")

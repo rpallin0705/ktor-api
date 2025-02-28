@@ -15,11 +15,13 @@ utiliza el objeto de conexión de manera automaticamente.
     se convierten en no bloqueantes. suspendTransaction encapsula transacciones a la bbdd, a partir de funciones suspend, por lo que
     deja que el hilo sea liberado a la respuesta de la bbdd. Lo más razonable, es correr la corrutina en el hilo de IO.
  */
-fun Application.configureDatabases(){
-    val driver = environment.config.property("ktor.database.driver").getString()
-    val url = environment.config.property("ktor.database.url").getString()
-    val username = environment.config.property("ktor.database.username").getString()
-    val password = environment.config.property("ktor.database.password").getString()
+fun Application.configureDatabases() {
+    val config = environment.config.config("database") // Obtiene la sección 'database'
+
+    val driver = config.property("driver").getString()
+    val url = config.property("url").getString()
+    val username = config.property("username").getString()
+    val password = config.property("password").getString()
 
     try {
         Database.connect(
@@ -28,10 +30,8 @@ fun Application.configureDatabases(){
             user = username,
             password = password
         )
-        log.info ("He establecido bien la conexión")
-    }catch (e: Exception){
-        log.error("Database connection failed: ${e.message}")
+        log.info("✅ Conexión establecida correctamente con la base de datos")
+    } catch (e: Exception) {
+        log.error("❌ Error al conectar a la base de datos: ${e.message}", e)
     }
-
-
 }

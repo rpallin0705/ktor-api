@@ -1,7 +1,7 @@
 package com.data.persistence.repository
 
-import com.data.persistence.models.UserDao
-import com.data.persistence.models.UserTable
+import com.data.persistence.models.user.UserDao
+import com.data.persistence.models.user.UserTable
 import com.data.persistence.models.suspendTransaction
 import com.data.security.PasswordHash
 import com.domain.mapping.UserDaoToUser

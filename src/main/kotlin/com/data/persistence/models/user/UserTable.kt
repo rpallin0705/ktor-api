@@ -1,4 +1,4 @@
-package com.data.persistence.models
+package com.data.persistence.models.user
 
 import org.jetbrains.exposed.dao.id.IntIdTable
 
@@ -12,7 +12,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
  * primaria será de tipo entero y se llamara id.
  */
 
-object  UserTable: IntIdTable("User") {
+object  UserTable: IntIdTable("user") {
     //val id = long("id").autoIncrement()
     val name = varchar("name", 100) // Campo opcional
     val password = varchar("password", 255)

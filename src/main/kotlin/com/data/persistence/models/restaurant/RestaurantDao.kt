@@ -1,4 +1,4 @@
-package com.data.persistence.models
+package com.data.persistence.models.restaurant
 
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass

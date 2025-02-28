@@ -1,5 +1,6 @@
 package com.ktor
 
+import com.ktor.router.restaurantRouting
 import com.ktor.router.userRouting
 import io.ktor.server.application.*
 
@@ -23,6 +24,8 @@ ktor trabaja con la clase interna Application que es la que representa el contex
 
 fun Application.myModule() {
     configureSerialization()
-    userRouting()
     configureDatabases()
+    userRouting()
+    restaurantRouting()
+
 }

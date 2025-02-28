@@ -1,6 +1,8 @@
 package com.domain.mapping
 
-import com.data.persistence.models.UserDao
+import com.data.persistence.models.restaurant.RestaurantDao
+import com.data.persistence.models.user.UserDao
+import com.domain.models.Restaurant
 import com.domain.models.User
 
 import com.domain.models.UpdateUser
@@ -23,4 +25,17 @@ fun UpdateUserToUser(user: UpdateUser): User {
         user.token ?: ""
     )
     return e
+}
+
+fun RestaurantDaoToRestaurant(restaurantDao: RestaurantDao): Restaurant {
+    val e = Restaurant(
+        restaurantDao.id.value,
+        restaurantDao.name,
+        restaurantDao.address,
+        restaurantDao.phone,
+        restaurantDao.rating ?: 0,
+        restaurantDao.description ?: "",
+        restaurantDao.image ?: ""
+    )
+    return  e
 }

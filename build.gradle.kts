@@ -30,6 +30,8 @@ dependencies {
   //  implementation(libs.ktor.server.config.yaml)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+    implementation("mysql:mysql-connector-java:8.0.33")
+
 
     implementation(libs.exposed.dao)
     implementation(libs.mariadb)  // Usando la versión desde el archivo libs.versions.toml
