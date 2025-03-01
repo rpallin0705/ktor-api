@@ -34,19 +34,22 @@ fun Application.authRouting() {
             }
         }
 
-        post("/auth/logout") {
-            val principal = call.principal<JWTPrincipal>()
-            val username = principal?.payload?.getClaim("username")?.asString()
+        authenticate("jwt-auth") {
+            post("/auth/logout") {
+                val principal = call.principal<JWTPrincipal>()
+                val username = principal?.payload?.getClaim("username")?.asString()
 
-            if (username != null) {
+                if (username.isNullOrBlank()) {
+                    call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Token no válido"))
+                    return@post
+                }
+
                 val success = ProviderUserCase.logout(username)
                 if (success) {
                     call.respond(HttpStatusCode.OK, mapOf("message" to "Logout exitoso"))
                 } else {
                     call.respond(HttpStatusCode.InternalServerError, mapOf("error" to "Error al cerrar sesión"))
                 }
-            } else {
-                call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Token no válido"))
             }
         }
 
