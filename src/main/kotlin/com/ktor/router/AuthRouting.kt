@@ -1,7 +1,6 @@
 package com.ktor.router
 
 import com.domain.models.UpdateUser
-import com.domain.security.JwtConfig
 import com.domain.usecase.user.ProviderUserCase
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -26,13 +25,12 @@ fun Application.authRouting() {
 
         post("/auth/register") {
             val request = call.receive<UpdateUser>()
-            val newUser = ProviderUserCase.register(request)
+            val isRegistered = ProviderUserCase.register(request)
 
-            if (newUser != null) {
-                val token = JwtConfig.generateToken(newUser.name!!)
-                call.respond(HttpStatusCode.Created, mapOf("token" to token))
+            if (isRegistered) {
+                call.respond(HttpStatusCode.Created, "Usuario registrado correctamente")
             } else {
-                call.respond(HttpStatusCode.Conflict, mapOf("error" to "El usuario ya existe"))
+                call.respond(HttpStatusCode.Conflict, "Usuario ya existe")
             }
         }
 

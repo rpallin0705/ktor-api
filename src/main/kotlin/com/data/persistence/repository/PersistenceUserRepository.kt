@@ -85,22 +85,25 @@ class PersistenceUserRepository : UserInterface {
     }
 
     override suspend fun register(user: UpdateUser): User? {
+        return suspendTransaction {
+            try {
+                val hashedPassword = PasswordHash.hash(user.password!!)
 
-        return try {
-            suspendTransaction {
-                UserDao.new {
-                    this.name = user.username!!
-                    this.password = PasswordHash.hash(user.password!!)
-                    this.token = user.token!!
+                val newUser = UserDao.new {
+                    name = user.username!!
+                    password = hashedPassword
+                    token = ""
                 }
-            }.let {
-                UserDaoToUser(it)
+                commit()
+                UserDaoToUser(newUser)
+            } catch (e: Exception) {
+                rollback()
+                println("Error al registrar usuario: ${e.message}")
+                null
             }
-        } catch (e: Exception) {
-            println("Error en el registro de empleado: ${e.localizedMessage}")
-            null
         }
     }
+
 
     override suspend fun invalidateToken(username: String): Boolean {
         return suspendTransaction {
