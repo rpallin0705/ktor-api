@@ -33,7 +33,7 @@ class MemoryUserRepository : UserInterface {
             val originUser = UserData.listUser[index]
             UserData.listUser[index] =  originUser
                 .copy(
-                    name = updateUser.name ?: originUser.name,
+                    name = updateUser.username ?: originUser.name,
                     token = updateUser.token ?: originUser.token,
                 )
             true
@@ -58,6 +58,18 @@ class MemoryUserRepository : UserInterface {
     }
 
     override suspend fun register(user: UpdateUser): User? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun invalidateToken(username: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUserToken(username: String): String? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUserToken(username: String, token: String): Boolean {
         TODO("Not yet implemented")
     }
 }

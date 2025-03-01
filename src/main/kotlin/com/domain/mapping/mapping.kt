@@ -20,7 +20,7 @@ fun UserDaoToUser(userDao: UserDao): User {
 
 fun UpdateUserToUser(user: UpdateUser): User {
     var e = User(
-        user.name!!,
+        user.username!!,
         user.password!!,
         user.token ?: ""
     )
@@ -37,5 +37,5 @@ fun RestaurantDaoToRestaurant(restaurantDao: RestaurantDao): Restaurant {
         restaurantDao.description ?: "",
         restaurantDao.image ?: ""
     )
-    return  e
+    return e
 }

@@ -118,18 +118,6 @@ fun Application.userRouting() {
 
         staticResources("/static", "static")
     }
-
-    routing {
-        post("/auth") {
-            val loginRequest = call.receive<UpdateUser>()
-            val isLogin = ProviderUserCase.login(loginRequest.name, loginRequest.password)
-
-            if (isLogin)
-                call.respond(HttpStatusCode.OK, "Usuario con name ${loginRequest.name} logueado")
-            else
-                call.respond(HttpStatusCode.Unauthorized, "Usuario incorrecto")
-        }
-    }
 }
 
 

@@ -17,4 +17,8 @@ interface UserInterface {
     suspend fun login(name: String, pass: String) : Boolean
 
     suspend fun register(user: UpdateUser) : User?
+    suspend fun invalidateToken(username: String): Boolean
+    suspend fun getUserToken(username: String): String?
+    suspend fun updateUserToken(username: String, token: String): Boolean
+
 }

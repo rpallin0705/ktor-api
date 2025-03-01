@@ -6,11 +6,11 @@ import com.domain.repository.UserInterface
 
 class RegisterUseCase(val repository: UserInterface) {
     suspend operator fun invoke(user: UpdateUser): User? {
-        user.name = user.name!!
+        user.username = user.username!!
         user.password = user.password!!
         user.token = user.token ?: ""
 
-        return if (repository.login(user.name!!, user.password!!))
+        return if (repository.login(user.username!!, user.password!!))
             null
         else
             repository.register(user)

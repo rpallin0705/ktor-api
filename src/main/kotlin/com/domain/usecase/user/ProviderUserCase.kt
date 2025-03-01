@@ -19,8 +19,8 @@ object ProviderUserCase {
     private val deleteUserUseCase = DeleteUserUseCase(repository)
     private val loginUseCase = LoginUseCase(repository)
     private val registerUseCase = RegisterUseCase(repository)
-
-
+    private val logoutUseCase = LogoutUseCase(repository)
+    private val isTokenValidUseCase = IsTokenValidUseCase(repository)
 
     suspend fun getAllUsers() = getAllUserUseCase()
 
@@ -71,4 +71,7 @@ object ProviderUserCase {
     }
 
     suspend fun login(name: String?, pass: String?)  = loginUseCase(name, pass)
+    suspend fun register (newUser: UpdateUser) = registerUseCase(newUser)
+    suspend fun logout(username: String): Boolean = logoutUseCase(username)
+    suspend fun isTokenValid(username: String, token: String) = isTokenValidUseCase(username, token)
 }

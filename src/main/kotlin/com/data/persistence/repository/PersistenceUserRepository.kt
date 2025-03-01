@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.update
 
-class PersistenceUserRepository: UserInterface {
+class PersistenceUserRepository : UserInterface {
 
     override suspend fun getAllUsers(): List<User> {
         return suspendTransaction {
@@ -54,12 +54,12 @@ class PersistenceUserRepository: UserInterface {
             suspendTransaction {
                 num = UserTable
                     .update({ UserTable.name eq name }) { stm ->
-                        user.name?.let { stm[this.name] = it }
+                        user.username?.let { stm[this.name] = it }
                         user.password?.let { stm[password] = it }
                     }
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             false
         }
@@ -73,12 +73,12 @@ class PersistenceUserRepository: UserInterface {
     }
 
     override suspend fun login(name: String, pass: String): Boolean {
-        val user = getUserByName(name)?: return false
+        val user = getUserByName(name) ?: return false
 
-        return try{
+        return try {
             val posibleHash = PasswordHash.hash(pass)
             posibleHash == user.password
-        }catch (e: Exception){
+        } catch (e: Exception) {
             println("Error en la autenticación: ${e.localizedMessage}")
             false
         }
@@ -89,16 +89,47 @@ class PersistenceUserRepository: UserInterface {
         return try {
             suspendTransaction {
                 UserDao.new {
-                    this.name = user.name!!
+                    this.name = user.username!!
                     this.password = PasswordHash.hash(user.password!!)
                     this.token = user.token!!
                 }
             }.let {
                 UserDaoToUser(it)
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             println("Error en el registro de empleado: ${e.localizedMessage}")
             null
+        }
+    }
+
+    override suspend fun invalidateToken(username: String): Boolean {
+        return suspendTransaction {
+            val user = UserDao.find { UserTable.name eq username }.singleOrNull()
+            if (user != null) {
+                user.token = ""
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    override suspend fun getUserToken(username: String): String? {
+        return suspendTransaction {
+            UserDao.find { UserTable.name eq username }
+                .singleOrNull()?.token
+        }
+    }
+
+    override suspend fun updateUserToken(username: String, token: String): Boolean {
+        return suspendTransaction {
+            val user = UserDao.find { UserTable.name eq username }.singleOrNull()
+            if (user != null) {
+                user.token = token
+                true
+            } else {
+                false
+            }
         }
     }
 }
