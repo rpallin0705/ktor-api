@@ -1,7 +1,8 @@
-package com.domain.usecase.restaurant
+package com.domain.usecase
 
 import com.data.persistence.repository.PersistenceRestaurantRepository
 import com.domain.models.Restaurant
+import com.domain.usecase.restaurant.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

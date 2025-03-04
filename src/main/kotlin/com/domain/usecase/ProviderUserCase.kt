@@ -1,7 +1,8 @@
-package com.domain.usecase.user
+package com.domain.usecase
 
 import com.data.persistence.repository.PersistenceUserRepository
 import com.domain.models.*
+import com.domain.usecase.user.*
 
 
 import org.slf4j.Logger
@@ -26,7 +27,7 @@ object ProviderUserCase {
 
     suspend fun getUserByName(name : String) : User? {
         if (name.isBlank()){
-            logger.warn("El name está vacío. No podemos buscar un empleado")
+            logger.warn("El email está vacío. No podemos buscar un empleado")
             return null
         }
         getUserByNameUseCase.name = name

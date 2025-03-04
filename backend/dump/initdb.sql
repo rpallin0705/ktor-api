@@ -1,7 +1,7 @@
 CREATE TABLE user
 (
     id       INT AUTO_INCREMENT PRIMARY KEY,
-    name     VARCHAR(100),
+    email     VARCHAR(100),
     password VARCHAR(255),
     token    VARCHAR(255)
 )ENGINE
@@ -20,7 +20,7 @@ CREATE TABLE restaurant
 
 
 
-INSERT INTO user (id, name, password, token)
+INSERT INTO user (id, email, password, token)
 VALUES (1, 'Juan Pérez', '$2a$12$nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK', ''),
        (2, 'María López', '$2a$12$jkxtj76TpGMKlhzH/FjX6./f4uZ8EWD.fJunzhWdS1PbYebRSd1P6', ''),
        (3, 'Carlos Sánchez', '$2a$12$h7OELt9pBczNOP/FYnlo4OBJsDyd47CYFVzyTEiFgqc5eER/1fyNq', ''),

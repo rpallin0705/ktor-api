@@ -13,11 +13,11 @@ class MemoryUserRepository : UserInterface {
     }
 
     override suspend fun getUserByName(name: String): User? {
-        return UserData.listUser.first { it.name == name }
+        return UserData.listUser.first { it.email == name }
     }
 
     override suspend fun postUser(user: User) : Boolean{
-        val emp = getUserByName(user.name
+        val emp = getUserByName(user.email
         )
         return if (emp!= null) {
             false
@@ -28,12 +28,12 @@ class MemoryUserRepository : UserInterface {
     }
 
     override suspend fun updateUser(updateUser: UpdateUser, name:String) : Boolean{
-        val index = UserData.listUser.indexOfFirst { it.name == name }
+        val index = UserData.listUser.indexOfFirst { it.email == name }
         return if (index != -1) {
             val originUser = UserData.listUser[index]
             UserData.listUser[index] =  originUser
                 .copy(
-                    name = updateUser.username ?: originUser.name,
+                    email = updateUser.email ?: originUser.email,
                     token = updateUser.token ?: originUser.token,
                 )
             true
@@ -44,7 +44,7 @@ class MemoryUserRepository : UserInterface {
     }
 
     override suspend fun deleteUser(name: String): Boolean {
-        val index = UserData.listUser.indexOfFirst { it.name == name }
+        val index = UserData.listUser.indexOfFirst { it.email == name }
         return if (index != -1) {
             UserData.listUser.removeAt(index)
             true

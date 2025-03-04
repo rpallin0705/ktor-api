@@ -1,7 +1,7 @@
 package com.ktor.router
 
 import com.domain.models.UpdateUser
-import com.domain.usecase.user.ProviderUserCase
+import com.domain.usecase.ProviderUserCase
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -14,7 +14,7 @@ fun Application.authRouting() {
     routing {
         post("/auth/login") {
             val request = call.receive<UpdateUser>()
-            val token = ProviderUserCase.login(request.username, request.password)
+            val token = ProviderUserCase.login(request.email, request.password)
 
             if (token != null) {
                 call.respond(HttpStatusCode.OK, mapOf("token" to token))
@@ -37,7 +37,7 @@ fun Application.authRouting() {
         authenticate("jwt-auth") {
             post("/auth/logout") {
                 val principal = call.principal<JWTPrincipal>()
-                val username = principal?.payload?.getClaim("username")?.asString()
+                val username = principal?.payload?.getClaim("email")?.asString()
 
                 if (username.isNullOrBlank()) {
                     call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Token no válido"))

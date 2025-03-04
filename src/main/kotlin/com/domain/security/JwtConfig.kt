@@ -17,7 +17,7 @@ object JwtConfig {
         return JWT.create()
             .withIssuer(issuer)
             .withAudience(audience)
-            .withClaim("username", username)
+            .withClaim("email", username)
             .withExpiresAt(Date(System.currentTimeMillis() + expirationTime))
             .sign(algorithm)
     }
@@ -31,7 +31,7 @@ object JwtConfig {
                 .build()
         )
         config.validate { credential ->
-            if (credential.payload.getClaim("username").asString() != null) {
+            if (credential.payload.getClaim("email").asString() != null) {
                 JWTPrincipal(credential.payload)
             } else null
         }

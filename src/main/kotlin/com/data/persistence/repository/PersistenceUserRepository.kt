@@ -34,11 +34,11 @@ class PersistenceUserRepository : UserInterface {
     }
 
     override suspend fun postUser(user: User): Boolean {
-        val em = getUserByName(user.name)
+        val em = getUserByName(user.email)
         return if (em == null) {
             suspendTransaction {
                 UserDao.new {
-                    this.name = user.name
+                    this.email = user.email
                     this.password = PasswordHash.hash(user.password)
                     this.token = user.token
                 }
@@ -54,7 +54,7 @@ class PersistenceUserRepository : UserInterface {
             suspendTransaction {
                 num = UserTable
                     .update({ UserTable.name eq name }) { stm ->
-                        user.username?.let { stm[this.name] = it }
+                        user.email?.let { stm[this.name] = it }
                         user.password?.let { stm[password] = it }
                     }
             }
@@ -90,7 +90,7 @@ class PersistenceUserRepository : UserInterface {
                 val hashedPassword = PasswordHash.hash(user.password!!)
 
                 val newUser = UserDao.new {
-                    name = user.username!!
+                    email = user.email!!
                     password = hashedPassword
                     token = ""
                 }

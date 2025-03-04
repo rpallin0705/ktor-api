@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UpdateUser (
     var password: String? = null,
-    var username: String? = null,
+    var email: String? = null,
     var token:String ? = null
 )

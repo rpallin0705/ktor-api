@@ -10,7 +10,7 @@ import com.domain.models.UpdateUser
 fun UserDaoToUser(userDao: UserDao): User {
 
     val e = User(
-        userDao.name,
+        userDao.email,
         userDao.password,
         userDao.token ?: "null"
     )
@@ -20,7 +20,7 @@ fun UserDaoToUser(userDao: UserDao): User {
 
 fun UpdateUserToUser(user: UpdateUser): User {
     var e = User(
-        user.username!!,
+        user.email!!,
         user.password!!,
         user.token ?: ""
     )

@@ -1,8 +1,8 @@
 package com.ktor.router
 
 import com.domain.models.Restaurant
-import com.domain.usecase.restaurant.ProviderRestaurantCase
-import com.domain.usecase.user.ProviderUserCase
+import com.domain.usecase.ProviderRestaurantCase
+import com.domain.usecase.ProviderUserCase
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.http.*
@@ -98,7 +98,7 @@ fun Application.restaurantRouting() {
 
 private suspend fun validateToken(call: ApplicationCall): Boolean {
     val principal = call.principal<JWTPrincipal>()
-    val username = principal?.payload?.getClaim("username")?.asString()
+    val username = principal?.payload?.getClaim("email")?.asString()
     val token = call.request.headers["Authorization"]?.removePrefix("Bearer ")
 
     if (username == null || token == null) {

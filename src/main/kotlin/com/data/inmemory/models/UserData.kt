@@ -5,102 +5,102 @@ import com.domain.models.User
 object UserData {
     val listUser = mutableListOf<User>(
         User(
-            name = "Santi",
+            email = "Santi",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Sonia",
+            email = "Sonia",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Guille",
+            email = "Guille",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Diego",
+            email = "Diego",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Luis Torres",
+            email = "Luis Torres",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Lucía Martínez",
+            email = "Lucía Martínez",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Miguel Romero",
+            email = "Miguel Romero",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Sofía Jiménez",
+            email = "Sofía Jiménez",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Pedro Castillo",
+            email = "Pedro Castillo",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Laura Díaz",
+            email = "Laura Díaz",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Diego Gómez",
+            email = "Diego Gómez",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Natalia Ruiz",
+            email = "Natalia Ruiz",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Javier Moreno",
+            email = "Javier Moreno",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Elena Vega",
+            email = "Elena Vega",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Ricardo Flores",
+            email = "Ricardo Flores",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Patricia Navarro",
+            email = "Patricia Navarro",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Fernando Paredes",
+            email = "Fernando Paredes",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Cristina Sáez",
+            email = "Cristina Sáez",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Raúl Castro",
+            email = "Raúl Castro",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         ),
         User(
-            name = "Inés Sánchez",
+            email = "Inés Sánchez",
             password = "nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK",
             token = ""
         )
