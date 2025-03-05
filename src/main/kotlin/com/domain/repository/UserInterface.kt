@@ -25,5 +25,4 @@ interface UserInterface {
 
     suspend fun updateUserToken(email: String, token: String): Boolean
 
-    suspend fun getUserFavsRestaurants(email: String): List<Restaurant>
 }

@@ -1,22 +1,16 @@
 package com.data.persistence.repository
 
-import com.data.persistence.models.favorites.FavoritesDao
-import com.data.persistence.models.favorites.UserFavsRestaurantsTable
-import com.data.persistence.models.restaurant.RestaurantDao
 import com.data.persistence.models.user.UserDao
 import com.data.persistence.models.user.UserTable
 import com.data.persistence.models.suspendTransaction
 import com.data.security.PasswordHash
-import com.domain.mapping.RestaurantDaoToRestaurant
 import com.domain.mapping.UserDaoToUser
-import com.domain.models.Restaurant
 
 import com.domain.models.User
 import com.domain.models.UpdateUser
 import com.domain.repository.UserInterface
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.idParam
 import org.jetbrains.exposed.sql.update
 
 class PersistenceUserRepository : UserInterface {
@@ -138,23 +132,6 @@ class PersistenceUserRepository : UserInterface {
                 true
             } else {
                 false
-            }
-        }
-    }
-
-    override suspend fun getUserFavsRestaurants(email: String): List<Restaurant> {
-
-        val user = getUserByEmail(email)
-        return suspendTransaction {
-            if (user == null) {
-                emptyList()
-            }
-            val restaurantIds = FavoritesDao.find { UserFavsRestaurantsTable.userId eq user.id }.map { it.id.value }
-            return if (restaurantIds.isEmpty())
-                emptyList()
-            else {
-                /*println(RestaurantDao.forIds(restaurantIds))*/
-                emptyList()
             }
         }
     }

@@ -74,7 +74,4 @@ class MemoryUserRepository : UserInterface {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUserFavsRestaurants(email: String): List<Restaurant> {
-        TODO("Not yet implemented")
-    }
 }
