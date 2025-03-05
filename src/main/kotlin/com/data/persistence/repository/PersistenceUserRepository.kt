@@ -1,16 +1,22 @@
 package com.data.persistence.repository
 
+import com.data.persistence.models.favorites.FavoritesDao
+import com.data.persistence.models.favorites.UserFavsRestaurantsTable
+import com.data.persistence.models.restaurant.RestaurantDao
 import com.data.persistence.models.user.UserDao
 import com.data.persistence.models.user.UserTable
 import com.data.persistence.models.suspendTransaction
 import com.data.security.PasswordHash
+import com.domain.mapping.RestaurantDaoToRestaurant
 import com.domain.mapping.UserDaoToUser
+import com.domain.models.Restaurant
 
 import com.domain.models.User
 import com.domain.models.UpdateUser
 import com.domain.repository.UserInterface
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.idParam
 import org.jetbrains.exposed.sql.update
 
 class PersistenceUserRepository : UserInterface {
@@ -21,11 +27,11 @@ class PersistenceUserRepository : UserInterface {
         }
     }
 
-    override suspend fun getUserByName(name: String): User? {
+    override suspend fun getUserByEmail(email: String): User? {
         return suspendTransaction {
             UserDao
                 .find {
-                    UserTable.name eq name
+                    UserTable.name eq email
                 }
                 .limit(1)
                 .map(::UserDaoToUser)
@@ -34,7 +40,7 @@ class PersistenceUserRepository : UserInterface {
     }
 
     override suspend fun postUser(user: User): Boolean {
-        val em = getUserByName(user.email)
+        val em = getUserByEmail(user.email)
         return if (em == null) {
             suspendTransaction {
                 UserDao.new {
@@ -48,12 +54,12 @@ class PersistenceUserRepository : UserInterface {
             false
     }
 
-    override suspend fun updateUser(user: UpdateUser, name: String): Boolean {
+    override suspend fun updateUser(user: UpdateUser, email: String): Boolean {
         var num = 0
         try {
             suspendTransaction {
                 num = UserTable
-                    .update({ UserTable.name eq name }) { stm ->
+                    .update({ UserTable.name eq email }) { stm ->
                         user.email?.let { stm[this.name] = it }
                         user.password?.let { stm[password] = it }
                     }
@@ -66,14 +72,14 @@ class PersistenceUserRepository : UserInterface {
         return num == 1
     }
 
-    override suspend fun deleteUser(name: String): Boolean = suspendTransaction {
+    override suspend fun deleteUser(email: String): Boolean = suspendTransaction {
         val num = UserTable
-            .deleteWhere { UserTable.name eq name }
+            .deleteWhere { UserTable.name eq email }
         num == 1
     }
 
-    override suspend fun login(name: String, pass: String): Boolean {
-        val user = getUserByName(name) ?: return false
+    override suspend fun login(email: String, pass: String): Boolean {
+        val user = getUserByEmail(email) ?: return false
 
         return try {
             val posibleHash = PasswordHash.hash(pass)
@@ -105,9 +111,9 @@ class PersistenceUserRepository : UserInterface {
     }
 
 
-    override suspend fun invalidateToken(username: String): Boolean {
+    override suspend fun invalidateToken(email: String): Boolean {
         return suspendTransaction {
-            val user = UserDao.find { UserTable.name eq username }.singleOrNull()
+            val user = UserDao.find { UserTable.name eq email }.singleOrNull()
             if (user != null) {
                 user.token = ""
                 true
@@ -117,21 +123,38 @@ class PersistenceUserRepository : UserInterface {
         }
     }
 
-    override suspend fun getUserToken(username: String): String? {
+    override suspend fun getUserToken(email: String): String? {
         return suspendTransaction {
-            UserDao.find { UserTable.name eq username }
+            UserDao.find { UserTable.name eq email }
                 .singleOrNull()?.token
         }
     }
 
-    override suspend fun updateUserToken(username: String, token: String): Boolean {
+    override suspend fun updateUserToken(email: String, token: String): Boolean {
         return suspendTransaction {
-            val user = UserDao.find { UserTable.name eq username }.singleOrNull()
+            val user = UserDao.find { UserTable.name eq email }.singleOrNull()
             if (user != null) {
                 user.token = token
                 true
             } else {
                 false
+            }
+        }
+    }
+
+    override suspend fun getUserFavsRestaurants(email: String): List<Restaurant> {
+
+        val user = getUserByEmail(email)
+        return suspendTransaction {
+            if (user == null) {
+                emptyList()
+            }
+            val restaurantIds = FavoritesDao.find { UserFavsRestaurantsTable.userId eq user.id }.map { it.id.value }
+            return if (restaurantIds.isEmpty())
+                emptyList()
+            else {
+                /*println(RestaurantDao.forIds(restaurantIds))*/
+                emptyList()
             }
         }
     }

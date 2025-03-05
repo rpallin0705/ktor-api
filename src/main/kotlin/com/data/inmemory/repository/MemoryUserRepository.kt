@@ -1,6 +1,7 @@
 package com.data.inmemory.repository
 
 import com.data.inmemory.models.UserData
+import com.domain.models.Restaurant
 import com.domain.models.User
 
 import com.domain.models.UpdateUser
@@ -12,12 +13,12 @@ class MemoryUserRepository : UserInterface {
         return UserData.listUser
     }
 
-    override suspend fun getUserByName(name: String): User? {
-        return UserData.listUser.first { it.email == name }
+    override suspend fun getUserByEmail(email: String): User? {
+        return UserData.listUser.first { it.email == email }
     }
 
     override suspend fun postUser(user: User) : Boolean{
-        val emp = getUserByName(user.email
+        val emp = getUserByEmail(user.email
         )
         return if (emp!= null) {
             false
@@ -27,8 +28,8 @@ class MemoryUserRepository : UserInterface {
             }
     }
 
-    override suspend fun updateUser(updateUser: UpdateUser, name:String) : Boolean{
-        val index = UserData.listUser.indexOfFirst { it.email == name }
+    override suspend fun updateUser(updateUser: UpdateUser, email:String) : Boolean{
+        val index = UserData.listUser.indexOfFirst { it.email == email }
         return if (index != -1) {
             val originUser = UserData.listUser[index]
             UserData.listUser[index] =  originUser
@@ -43,8 +44,8 @@ class MemoryUserRepository : UserInterface {
         }
     }
 
-    override suspend fun deleteUser(name: String): Boolean {
-        val index = UserData.listUser.indexOfFirst { it.email == name }
+    override suspend fun deleteUser(email: String): Boolean {
+        val index = UserData.listUser.indexOfFirst { it.email == email }
         return if (index != -1) {
             UserData.listUser.removeAt(index)
             true
@@ -53,7 +54,7 @@ class MemoryUserRepository : UserInterface {
         }
     }
 
-    override suspend fun login(name: String, pass: String): Boolean {
+    override suspend fun login(email: String, pass: String): Boolean {
         TODO("Not yet implemented")
     }
 
@@ -61,15 +62,19 @@ class MemoryUserRepository : UserInterface {
         TODO("Not yet implemented")
     }
 
-    override suspend fun invalidateToken(username: String): Boolean {
+    override suspend fun invalidateToken(email: String): Boolean {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUserToken(username: String): String? {
+    override suspend fun getUserToken(email: String): String? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateUserToken(username: String, token: String): Boolean {
+    override suspend fun updateUserToken(email: String, token: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUserFavsRestaurants(email: String): List<Restaurant> {
         TODO("Not yet implemented")
     }
 }

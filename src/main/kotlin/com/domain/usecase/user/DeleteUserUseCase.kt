@@ -3,13 +3,13 @@ package com.domain.usecase.user
 import com.domain.repository.UserInterface
 
 class DeleteUserUseCase (val repository : UserInterface){
-    var name : String? = null
+    var email : String? = null
 
     suspend operator fun invoke() : Boolean {
-        return if (name == null) {
+        return if (email == null) {
             false
         }else{
-            return repository.deleteUser(name!!)
+            return repository.deleteUser(email!!)
         }
     }
 }

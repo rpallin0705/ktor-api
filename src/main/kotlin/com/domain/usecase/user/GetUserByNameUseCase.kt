@@ -4,13 +4,13 @@ import com.domain.models.User
 import com.domain.repository.UserInterface
 
     class GetUserByNameUseCase (val repository : UserInterface) {
-        var name : String? = null
+        var email : String? = null
 
         suspend operator fun invoke() : User? {
-            return if (name?.isBlank() == true)
+            return if (email?.isBlank() == true)
                 null
             else{
-                repository.getUserByName(name!!)
+                repository.getUserByEmail(email!!)
             }
         }
     }

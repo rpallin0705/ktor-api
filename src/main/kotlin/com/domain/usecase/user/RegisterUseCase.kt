@@ -8,7 +8,7 @@ class RegisterUseCase(private val repository: UserInterface) {
         user.email = user.email ?: return false
         user.password = user.password ?: return false
 
-        return if (repository.getUserByName(user.email!!) != null)
+        return if (repository.getUserByEmail(user.email!!) != null)
             false
         else {
             val registeredUser = repository.register(user)

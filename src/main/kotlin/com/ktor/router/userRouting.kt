@@ -1,5 +1,6 @@
 package com.ktor.router
 
+import com.domain.models.Restaurant
 import com.domain.models.User
 import com.domain.models.UpdateUser
 import com.domain.usecase.ProviderUserCase
@@ -25,7 +26,7 @@ fun Application.userRouting() {
             val userName = call.request.queryParameters["email"]
             logger.warn("El Name tiene de valor $userName")
             if (userName != null) {
-                val user = ProviderUserCase.getUserByName(userName)
+                val user = ProviderUserCase.getUserByEmail(userName)
                 if (user == null) {
                     call.respond(HttpStatusCode.NotFound, "usuario no encontrado")
                 } else {
@@ -33,7 +34,6 @@ fun Application.userRouting() {
                 }
                 return@get
             }
-
         }
 
         get("/user/{userName}") {
@@ -43,12 +43,28 @@ fun Application.userRouting() {
                 return@get
             }
 
-            val user = ProviderUserCase.getUserByName(userName)
+            val user = ProviderUserCase.getUserByEmail(userName)
             if (user == null) {
                 call.respond(HttpStatusCode.NotFound, "usuario no encontrado")
                 return@get
             }
             call.respond(user)
+        }
+
+        get("/user/restaurants/{email}"){
+            val email = call.parameters["email"]
+            if (email == null) {
+                call.respond(HttpStatusCode.BadRequest, "Debes pasar el email a buscar")
+                return@get
+            }
+
+            val favsRestaurant: List<Restaurant> = ProviderUserCase.getUserFavs(email)
+            if (favsRestaurant.isEmpty()) {
+                call.respond(HttpStatusCode.NoContent, "No tienes ningún restaurante en favoritos")
+                return@get
+            }
+
+            return@get call.respond(favsRestaurant)
         }
 
         post("/user") {
@@ -67,8 +83,6 @@ fun Application.userRouting() {
             } catch (e: Exception) {
                 call.respond(HttpStatusCode.BadRequest, "Error en los datos. Probablemente falten.")
             }
-
-
         }
 
         patch("/user/{userName}") {
