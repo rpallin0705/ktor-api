@@ -1,4 +1,5 @@
-import com.data.persistence.models.favorites.UserFavsRestaurantsTable
+package com.data.persistence.models.favorites
+
 import com.data.persistence.models.restaurant.RestaurantDao
 import com.data.persistence.models.user.UserDao
 import org.jetbrains.exposed.dao.LongEntity

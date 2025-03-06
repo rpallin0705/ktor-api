@@ -3,6 +3,7 @@ package com.ktor.router
 import com.domain.models.Restaurant
 import com.domain.usecase.ProviderRestaurantCase
 import com.domain.usecase.ProviderUserCase
+import com.utils.validateToken
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.http.*
@@ -16,14 +17,14 @@ fun Application.restaurantRouting() {
         authenticate("jwt-auth") {
             // Obtener todos los restaurantes
             get("/restaurant") {
-                if (!validateToken(call)) return@get
+                if (!call.validateToken()) return@get
                 val restaurants = ProviderRestaurantCase.getAllRestaurants()
                 call.respond(restaurants)
             }
 
             // Obtener un restaurante por ID
             get("/restaurant/{id}") {
-                if (!validateToken(call)) return@get
+                if (!call.validateToken()) return@get
                 val id = call.parameters["id"]?.toLongOrNull()
                 if (id == null) {
                     call.respond(HttpStatusCode.BadRequest, "ID inválido")
@@ -40,7 +41,7 @@ fun Application.restaurantRouting() {
 
             // Agregar un nuevo restaurante
             post("/restaurant") {
-                if (!validateToken(call)) return@post
+                if (!call.validateToken()) return@post
                 try {
                     val restaurant = call.receive<Restaurant>()
                     val isInserted = ProviderRestaurantCase.insertRestaurant(restaurant)
@@ -56,7 +57,7 @@ fun Application.restaurantRouting() {
 
             // Actualizar un restaurante por ID
             patch("/restaurant/{id}") {
-                if (!validateToken(call)) return@patch
+                if (!call.validateToken()) return@patch
                 val id = call.parameters["id"]?.toLongOrNull()
                 if (id == null) {
                     call.respond(HttpStatusCode.BadRequest, "ID inválido")
@@ -78,7 +79,7 @@ fun Application.restaurantRouting() {
 
             // Eliminar un restaurante por ID
             delete("/restaurant/{id}") {
-                if (!validateToken(call)) return@delete
+                if (!call.validateToken()) return@delete
                 val id = call.parameters["id"]?.toLongOrNull()
                 if (id == null) {
                     call.respond(HttpStatusCode.BadRequest, "ID inválido")
@@ -95,22 +96,3 @@ fun Application.restaurantRouting() {
         }
     }
 }
-
-private suspend fun validateToken(call: ApplicationCall): Boolean {
-    val principal = call.principal<JWTPrincipal>()
-    val username = principal?.payload?.getClaim("email")?.asString()
-    val token = call.request.headers["Authorization"]?.removePrefix("Bearer ")
-
-    if (username == null || token == null) {
-        call.respond(HttpStatusCode.Unauthorized, "Token no válido")
-        return false
-    }
-
-    val isTokenValid = ProviderUserCase.isTokenValid(username, token)
-    if (!isTokenValid) {
-        call.respond(HttpStatusCode.Unauthorized, "Token inválido o expirado")
-        return false
-    }
-    return true
-}
-

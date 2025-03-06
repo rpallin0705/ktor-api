@@ -1,12 +1,12 @@
 package com.data.persistence.repository
 
+import com.data.persistence.models.favorites.UserFavoritesDao
 import com.data.persistence.models.favorites.UserFavsRestaurantsTable
 import com.data.persistence.models.suspendTransaction
 import com.data.persistence.models.restaurant.RestaurantDao
 import com.data.persistence.models.user.UserDao
 import com.domain.models.UserFavorites
 import com.domain.repository.UserFavoritesInterface
-import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.and
 
 class UserFavoritesRepository : UserFavoritesInterface {

@@ -25,20 +25,10 @@ CREATE TABLE user_favorites
     id            INT AUTO_INCREMENT PRIMARY KEY,
     user_id       INT,
     restaurant_id INT,
-    CONSTRAINT 'fk_id_user' FOREIGN KEY (user_id) REFERENCES user (id),
-    CONSTRAINT 'fk_id_restaurant' FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
+    CONSTRAINT fk_id_user FOREIGN KEY (user_id) REFERENCES user (id),
+    CONSTRAINT fk_id_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT = 'Tabla de favoritos';
-
-INSERT INTO user_favorites(user_id, restaurant_id)
-VALUES (1, 1),
-       (1, 2),
-       (1, 3),
-       (1, 4),
-       (2, 1),
-       (2, 2),
-       (3, 3),
-       (4, 4);
 
 INSERT INTO user (id, email, password, token)
 VALUES (1, 'Juan Pérez', '$2a$12$nTeIMaCnIcvBJlug2YLwGOzVd9gB9bSYN7wZZnZL4/KaOWJqeVkcK', ''),
@@ -84,3 +74,12 @@ VALUES (1, 'Sukiyabashi Jiro', 'Calle Gran Vía, 12, 28013 Madrid, España', '91
        (10, 'Sushi Mizutani', 'Calle Mayor, 20, 28005 Madrid, España', '911987654', 4,
         'Restaurante de sushi tradicional, famoso por la precisión del chef y su compromiso con la calidad.');
 
+INSERT INTO user_favorites(user_id, restaurant_id)
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (1, 4),
+       (2, 1),
+       (2, 2),
+       (3, 3),
+       (4, 4);

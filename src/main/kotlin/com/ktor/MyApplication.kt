@@ -2,6 +2,7 @@ package com.ktor
 
 import com.ktor.router.authRouting
 import com.ktor.router.restaurantRouting
+import com.ktor.router.userFavoritesRouting
 import com.ktor.router.userRouting
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -22,6 +23,7 @@ fun Application.myModule() {
         authenticate("jwt-auth") {
             userRouting()
             restaurantRouting()
+            userFavoritesRouting()
         }
     }
 }

@@ -51,22 +51,6 @@ fun Application.userRouting() {
             call.respond(user)
         }
 
-        get("/user/restaurants/{email}"){
-            val email = call.parameters["email"]
-            if (email == null) {
-                call.respond(HttpStatusCode.BadRequest, "Debes pasar el email a buscar")
-                return@get
-            }
-
-            val favsRestaurant: List<Restaurant> = ProviderUserCase.getUserFavs(email)
-            if (favsRestaurant.isEmpty()) {
-                call.respond(HttpStatusCode.NoContent, "No tienes ningún restaurante en favoritos")
-                return@get
-            }
-
-            return@get call.respond(favsRestaurant)
-        }
-
         post("/user") {
             try {
                 val emp = call.receive<User>()
@@ -120,7 +104,7 @@ fun Application.userRouting() {
                     call.respond(
                         HttpStatusCode.NotFound,
                         "usuario no encontrado para borrar"
-                    )  //Montamos un 404 de no encontrado.
+                    )
                 } else {
                     call.respond(HttpStatusCode.NoContent)
                 }

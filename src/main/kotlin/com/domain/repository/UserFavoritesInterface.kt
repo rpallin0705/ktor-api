@@ -1,7 +1,5 @@
 package com.domain.repository
 
-import com.domain.models.Restaurant
-import com.domain.models.UpdateUser
 import com.domain.models.UserFavorites
 
 interface UserFavoritesInterface {

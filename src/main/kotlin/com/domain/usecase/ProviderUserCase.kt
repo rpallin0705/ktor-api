@@ -23,7 +23,6 @@ object ProviderUserCase {
     private val registerUseCase = RegisterUseCase(repository)
     private val logoutUseCase = LogoutUseCase(repository)
     private val isTokenValidUseCase = IsTokenValidUseCase(repository)
-    private val getUserFavRestaurantsUseCase = GetUserFavRestaurantsUseCase(repository)
 
     suspend fun getAllUsers() = getAllUserUseCase()
 
@@ -71,14 +70,6 @@ object ProviderUserCase {
     suspend fun deleteUser(email : String) : Boolean{
         deleteUserUseCase.email = email
         return deleteUserUseCase()
-    }
-    
-    suspend fun getUserFavs(email : String) : List<Restaurant>{
-        val user = getUserByEmail(email)
-        return if(user != null) {
-            getUserFavRestaurantsUseCase(email)
-        } else
-            getUserFavRestaurantsUseCase("")
     }
 
     suspend fun login(email: String?, pass: String?)  = loginUseCase(email, pass)
