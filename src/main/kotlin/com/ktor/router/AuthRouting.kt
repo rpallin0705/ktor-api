@@ -53,5 +53,27 @@ fun Application.authRouting() {
             }
         }
 
+        authenticate("jwt-auth") {
+            get("/auth/validate-token") {
+                val principal = call.principal<JWTPrincipal>()
+                val email = principal?.payload?.getClaim("email")?.asString()
+                val token = call.request.headers["Authorization"]?.removePrefix("Bearer ")
+
+                if (email.isNullOrBlank() || token.isNullOrBlank()) {
+                    call.respond(HttpStatusCode.BadRequest, "Token inválido")
+                    return@get
+                }
+
+                val isValid = ProviderUserCase.validateToken(email, token)
+                if (isValid) {
+                    call.respond(HttpStatusCode.OK, mapOf("valid" to true))
+                } else {
+                    call.respond(
+                        HttpStatusCode.Unauthorized,
+                        mapOf("valid" to false, "message" to "Token expirado o inválido")
+                    )
+                }
+            }
+        }
     }
 }

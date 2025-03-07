@@ -74,4 +74,8 @@ class MemoryUserRepository : UserInterface {
         TODO("Not yet implemented")
     }
 
+    override suspend fun validateToken(email: String, token: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
 }

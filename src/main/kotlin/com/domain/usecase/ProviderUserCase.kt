@@ -1,5 +1,6 @@
 package com.domain.usecase
 
+import ValidateTokenUseCase
 import com.data.persistence.repository.PersistenceUserRepository
 import com.domain.models.*
 import com.domain.usecase.user.*
@@ -23,6 +24,7 @@ object ProviderUserCase {
     private val registerUseCase = RegisterUseCase(repository)
     private val logoutUseCase = LogoutUseCase(repository)
     private val isTokenValidUseCase = IsTokenValidUseCase(repository)
+    private val validateTokenUseCase = ValidateTokenUseCase(repository)
 
     suspend fun getAllUsers() = getAllUserUseCase()
 
@@ -76,4 +78,6 @@ object ProviderUserCase {
     suspend fun register (newUser: UpdateUser) = registerUseCase(newUser)
     suspend fun logout(email: String): Boolean = logoutUseCase(email)
     suspend fun isTokenValid(email: String, token: String) = isTokenValidUseCase(email, token)
+    suspend fun validateToken(email: String, token: String): Boolean = validateTokenUseCase(email, token)
+
 }

@@ -135,4 +135,12 @@ class PersistenceUserRepository : UserInterface {
             }
         }
     }
+
+    override suspend fun validateToken(email: String, token: String): Boolean {
+        return suspendTransaction {
+            val storedToken = UserDao.find { UserTable.name eq email }
+                .singleOrNull()?.token
+            storedToken == token
+        }
+    }
 }

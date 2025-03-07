@@ -25,4 +25,6 @@ interface UserInterface {
 
     suspend fun updateUserToken(email: String, token: String): Boolean
 
+    suspend fun validateToken(email: String, token: String): Boolean
+
 }
