@@ -15,14 +15,13 @@ import io.ktor.server.routing.*
 fun Application.restaurantRouting() {
     routing {
         authenticate("jwt-auth") {
-            // Obtener todos los restaurantes
+
             get("/restaurant") {
                 if (!call.validateToken()) return@get
                 val restaurants = ProviderRestaurantCase.getAllRestaurants()
                 call.respond(restaurants)
             }
 
-            // Obtener un restaurante por ID
             get("/restaurant/{id}") {
                 if (!call.validateToken()) return@get
                 val id = call.parameters["id"]?.toLongOrNull()
@@ -39,23 +38,21 @@ fun Application.restaurantRouting() {
                 }
             }
 
-            // Agregar un nuevo restaurante
             post("/restaurant") {
                 if (!call.validateToken()) return@post
                 try {
                     val restaurant = call.receive<Restaurant>()
-                    val isInserted = ProviderRestaurantCase.insertRestaurant(restaurant)
-                    if (!isInserted) {
+                    val insertedRestaurant = ProviderRestaurantCase.insertRestaurant(restaurant)
+                    if (insertedRestaurant == null) {
                         call.respond(HttpStatusCode.Conflict, "No se pudo insertar el restaurante")
                     } else {
-                        call.respond(HttpStatusCode.Created, "Restaurante agregado correctamente")
+                        call.respond(HttpStatusCode.Created, insertedRestaurant) // Devuelve el JSON del restaurante insertado
                     }
                 } catch (e: Exception) {
                     call.respond(HttpStatusCode.BadRequest, "Error en la solicitud: ${e.message}")
                 }
             }
 
-            // Actualizar un restaurante por ID
             patch("/restaurant/{id}") {
                 if (!call.validateToken()) return@patch
                 val id = call.parameters["id"]?.toLongOrNull()
@@ -66,18 +63,17 @@ fun Application.restaurantRouting() {
 
                 try {
                     val updatedRestaurant = call.receive<Restaurant>()
-                    val isUpdated = ProviderRestaurantCase.updateRestaurant(id, updatedRestaurant)
-                    if (!isUpdated) {
+                    val restaurantUpdated = ProviderRestaurantCase.updateRestaurant(id, updatedRestaurant)
+                    if (restaurantUpdated == null) {
                         call.respond(HttpStatusCode.Conflict, "No se pudo actualizar el restaurante")
                     } else {
-                        call.respond(HttpStatusCode.OK, "Restaurante actualizado correctamente")
+                        call.respond(HttpStatusCode.OK, restaurantUpdated) // Devuelve el JSON del restaurante actualizado
                     }
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.BadRequest, "Error en la solicitud")
+                    call.respond(HttpStatusCode.BadRequest, "Error en la solicitud: ${e.message}")
                 }
             }
 
-            // Eliminar un restaurante por ID
             delete("/restaurant/{id}") {
                 if (!call.validateToken()) return@delete
                 val id = call.parameters["id"]?.toLongOrNull()
