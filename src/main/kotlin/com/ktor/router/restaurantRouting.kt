@@ -46,7 +46,7 @@ fun Application.restaurantRouting() {
                     if (insertedRestaurant == null) {
                         call.respond(HttpStatusCode.Conflict, "No se pudo insertar el restaurante")
                     } else {
-                        call.respond(HttpStatusCode.Created, insertedRestaurant) // Devuelve el JSON del restaurante insertado
+                        call.respond(HttpStatusCode.Created, insertedRestaurant)
                     }
                 } catch (e: Exception) {
                     call.respond(HttpStatusCode.BadRequest, "Error en la solicitud: ${e.message}")
