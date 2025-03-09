@@ -169,4 +169,11 @@ class PersistenceUserRepository : UserInterface {
             }
         }
     }
+
+    override suspend fun getUserProfilePicture(email: String): String? {
+        return suspendTransaction {
+            val user = UserDao.find { UserTable.name eq email }.singleOrNull()
+            user?.imageUrl
+        }
+    }
 }

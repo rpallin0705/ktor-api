@@ -1,7 +1,6 @@
 package com.data.inmemory.repository
 
 import com.data.inmemory.models.UserData
-import com.domain.models.Restaurant
 import com.domain.models.User
 
 import com.domain.models.UpdateUser
@@ -83,6 +82,10 @@ class MemoryUserRepository : UserInterface {
     }
 
     override suspend fun deleteUserProfilePicture(email: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUserProfilePicture(email: String): String? {
         TODO("Not yet implemented")
     }
 }

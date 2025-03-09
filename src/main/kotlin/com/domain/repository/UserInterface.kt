@@ -1,6 +1,5 @@
 package com.domain.repository
 
-import com.domain.models.Restaurant
 import com.domain.models.User
 import com.domain.models.UpdateUser
 
@@ -28,5 +27,8 @@ interface UserInterface {
     suspend fun validateToken(email: String, token: String): Boolean
 
     suspend fun uploadUserProfilePicture(email: String, imagePath: String): Boolean
+
     suspend fun deleteUserProfilePicture(email: String): Boolean
+
+    suspend fun getUserProfilePicture(email: String): String?
 }

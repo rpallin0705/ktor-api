@@ -4,9 +4,6 @@ import ValidateTokenUseCase
 import com.data.persistence.repository.PersistenceUserRepository
 import com.domain.models.*
 import com.domain.usecase.user.*
-import org.jetbrains.exposed.sql.resolveColumnType
-
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -27,6 +24,7 @@ object ProviderUserCase {
     private val validateTokenUseCase = ValidateTokenUseCase(repository)
     private val uploadUserProfilePictureUseCase = UploadUserProfilePictureUseCase(repository)
     private val deleteUserProfilePictureUseCase = DeleteUserProfilePictureUseCase(repository)
+    private val getUserProfilePictureUseCase = GetUserProfilePictureUseCase(repository)
 
     suspend fun getAllUsers() = getAllUserUseCase()
 
@@ -83,4 +81,5 @@ object ProviderUserCase {
     suspend fun validateToken(email: String, token: String): Boolean = validateTokenUseCase(email, token)
     suspend fun  uploadUserProfilePicture(email: String, imagePath: String) : Boolean = uploadUserProfilePictureUseCase(email, imagePath)
     suspend fun deleteUserProfilePicture(email: String): Boolean = deleteUserProfilePictureUseCase(email)
+    suspend fun getUserProfilePicture(email: String): String? = getUserProfilePictureUseCase(email)
 }

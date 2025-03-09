@@ -149,7 +149,7 @@ fun Application.userRouting() {
             if (fileName != null) {
                 val success = ProviderUserCase.uploadUserProfilePicture(email, fileName!!)
                 if (success) {
-                    call.respond(HttpStatusCode.OK, "Imagen subida correctamente en $fileName")
+                    call.respond(HttpStatusCode.Created)
                 } else {
                     call.respond(HttpStatusCode.InternalServerError, "No se pudo actualizar la imagen")
                 }
@@ -186,12 +186,33 @@ fun Application.userRouting() {
 
             val success = ProviderUserCase.deleteUserProfilePicture(email)
             if (success) {
-                call.respond(HttpStatusCode.OK, "Imagen eliminada correctamente")
+                call.respond(HttpStatusCode.NoContent)
             } else {
                 call.respond(HttpStatusCode.InternalServerError, "No se pudo eliminar la imagen en la base de datos")
             }
         }
 
+        get("/user/{email}/image") {
+            val email = call.parameters["email"]
+            if (email == null) {
+                call.respond(HttpStatusCode.BadRequest, "Falta el parámetro email")
+                return@get
+            }
+
+            val imageUrl = ProviderUserCase.getUserProfilePicture(email)
+            if (imageUrl.isNullOrBlank()) {
+                call.respond(HttpStatusCode.NotFound, "No se encontró una imagen para este usuario")
+                return@get
+            }
+
+            val imageFile = File(imageUrl)
+            if (!imageFile.exists()) {
+                call.respond(HttpStatusCode.NotFound, "El archivo de imagen no existe en el servidor")
+                return@get
+            }
+
+            call.respondFile(imageFile)
+        }
 
         staticResources("/static", "static")
     }
