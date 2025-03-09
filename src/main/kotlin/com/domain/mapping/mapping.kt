@@ -8,16 +8,14 @@ import com.domain.models.User
 import com.domain.models.UpdateUser
 
 fun UserDaoToUser(userDao: UserDao): User {
-
-    val e = User(
+    return User(
         userDao.id.value,
         userDao.email,
         userDao.password,
-        userDao.token ?: "null"
+        userDao.token ?: "null",
+        userDao.imageUrl
     )
-    return e
 }
-
 
 fun UpdateUserToUser(user: UpdateUser): User {
     var e = User(

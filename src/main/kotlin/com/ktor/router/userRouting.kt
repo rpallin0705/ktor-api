@@ -158,6 +158,41 @@ fun Application.userRouting() {
             }
         }
 
+        delete("/user/{email}/deleteImage") {
+            val email = call.parameters["email"]
+            if (email == null) {
+                call.respond(HttpStatusCode.BadRequest, "Falta el parámetro email")
+                return@delete
+            }
+
+            val user = ProviderUserCase.getUserByEmail(email)
+            if (user == null) {
+                call.respond(HttpStatusCode.NotFound, "Usuario no encontrado")
+                return@delete
+            }
+
+            if (user.imageUrl.isNullOrBlank()) {
+                call.respond(HttpStatusCode.NotFound, "No se encontró una imagen para este usuario")
+                return@delete
+            }
+
+            val imageFile = File(user.imageUrl)
+            if (imageFile.exists()) {
+                println("DEBUG: Eliminando archivo: ${user.imageUrl}")
+                imageFile.delete()
+            } else {
+                println("DEBUG: El archivo no existe en el servidor")
+            }
+
+            val success = ProviderUserCase.deleteUserProfilePicture(email)
+            if (success) {
+                call.respond(HttpStatusCode.OK, "Imagen eliminada correctamente")
+            } else {
+                call.respond(HttpStatusCode.InternalServerError, "No se pudo eliminar la imagen en la base de datos")
+            }
+        }
+
+
         staticResources("/static", "static")
     }
 }

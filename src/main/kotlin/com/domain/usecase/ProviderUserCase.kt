@@ -26,6 +26,7 @@ object ProviderUserCase {
     private val isTokenValidUseCase = IsTokenValidUseCase(repository)
     private val validateTokenUseCase = ValidateTokenUseCase(repository)
     private val uploadUserProfilePictureUseCase = UploadUserProfilePictureUseCase(repository)
+    private val deleteUserProfilePictureUseCase = DeleteUserProfilePictureUseCase(repository)
 
     suspend fun getAllUsers() = getAllUserUseCase()
 
@@ -81,4 +82,5 @@ object ProviderUserCase {
     suspend fun isTokenValid(email: String, token: String) = isTokenValidUseCase(email, token)
     suspend fun validateToken(email: String, token: String): Boolean = validateTokenUseCase(email, token)
     suspend fun  uploadUserProfilePicture(email: String, imagePath: String) : Boolean = uploadUserProfilePictureUseCase(email, imagePath)
+    suspend fun deleteUserProfilePicture(email: String): Boolean = deleteUserProfilePictureUseCase(email)
 }

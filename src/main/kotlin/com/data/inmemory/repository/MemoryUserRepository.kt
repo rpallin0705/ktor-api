@@ -82,4 +82,7 @@ class MemoryUserRepository : UserInterface {
         TODO("Not yet implemented")
     }
 
+    override suspend fun deleteUserProfilePicture(email: String): Boolean {
+        TODO("Not yet implemented")
+    }
 }

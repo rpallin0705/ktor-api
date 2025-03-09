@@ -148,7 +148,21 @@ class PersistenceUserRepository : UserInterface {
         return suspendTransaction {
             val user = UserDao.find { UserTable.name eq email }.singleOrNull()
             if (user != null) {
+                println("DEBUG: Guardando imagen en BD: $imagePath") // 🚀 Verificar antes de guardar
                 user.imageUrl = imagePath
+                true
+            } else {
+                println("DEBUG: Usuario no encontrado para guardar la imagen") // 🚀 Verificar si existe
+                false
+            }
+        }
+    }
+
+    override suspend fun deleteUserProfilePicture(email: String): Boolean {
+        return suspendTransaction {
+            val user = UserDao.find { UserTable.name eq email }.singleOrNull()
+            if (user != null) {
+                user.imageUrl = null
                 true
             } else {
                 false
