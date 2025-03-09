@@ -1,11 +1,11 @@
 CREATE TABLE user
 (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    email    VARCHAR(100),
-    password VARCHAR(255),
-    token    VARCHAR(255)
-) ENGINE
-      = InnoDB
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    email     VARCHAR(100),
+    password  VARCHAR(255),
+    token     VARCHAR(255),
+    image_url VARCHAR(500) NULL
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='tabla de usuarios';
 
 CREATE TABLE restaurant

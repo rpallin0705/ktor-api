@@ -143,4 +143,16 @@ class PersistenceUserRepository : UserInterface {
             storedToken == token
         }
     }
+
+    override suspend fun uploadUserProfilePicture(email: String, imagePath: String): Boolean {
+        return suspendTransaction {
+            val user = UserDao.find { UserTable.name eq email }.singleOrNull()
+            if (user != null) {
+                user.imageUrl = imagePath
+                true
+            } else {
+                false
+            }
+        }
+    }
 }

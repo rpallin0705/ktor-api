@@ -78,4 +78,8 @@ class MemoryUserRepository : UserInterface {
         TODO("Not yet implemented")
     }
 
+    override suspend fun uploadUserProfilePicture(email: String, imagePath: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
 }

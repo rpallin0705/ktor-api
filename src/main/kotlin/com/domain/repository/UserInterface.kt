@@ -27,4 +27,5 @@ interface UserInterface {
 
     suspend fun validateToken(email: String, token: String): Boolean
 
+    suspend fun uploadUserProfilePicture(email: String, imagePath: String): Boolean
 }

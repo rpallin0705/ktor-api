@@ -1,17 +1,18 @@
 package com.ktor.router
 
-import com.domain.models.Restaurant
 import com.domain.models.User
 import com.domain.models.UpdateUser
 import com.domain.usecase.ProviderUserCase
 import com.domain.usecase.ProviderUserCase.logger
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.serialization.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import java.io.File
 
 fun Application.userRouting() {
     routing {
@@ -114,8 +115,49 @@ fun Application.userRouting() {
             return@delete
         }
 
+        post("/user/{email}/uploadImage") {
+            val email = call.parameters["email"]
+            if (email == null) {
+                call.respond(HttpStatusCode.BadRequest, "Falta el parámetro email")
+                return@post
+            }
+
+            val userDir = File("uploads/$email")
+            if (!userDir.exists()) {
+                userDir.mkdirs()
+            }
+
+            val multipartData = call.receiveMultipart()
+            var fileName: String? = null
+
+            multipartData.forEachPart { part ->
+                if (part is PartData.FileItem) {
+                    val extension = part.originalFileName?.substringAfterLast(".", "png") ?: "png"
+
+                    fileName = "$userDir/${email}_UploadImage.$extension"
+
+                    val file = File(fileName!!)
+
+                    val inputStream = part.streamProvider()
+                    val outputFile = file.outputStream().buffered()
+
+                    inputStream.use { input -> outputFile.use { output -> input.copyTo(output) } }
+                }
+                part.dispose()
+            }
+
+            if (fileName != null) {
+                val success = ProviderUserCase.uploadUserProfilePicture(email, fileName!!)
+                if (success) {
+                    call.respond(HttpStatusCode.OK, "Imagen subida correctamente en $fileName")
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError, "No se pudo actualizar la imagen")
+                }
+            } else {
+                call.respond(HttpStatusCode.BadRequest, "No se encontró ninguna imagen en la solicitud")
+            }
+        }
+
         staticResources("/static", "static")
     }
 }
-
-
