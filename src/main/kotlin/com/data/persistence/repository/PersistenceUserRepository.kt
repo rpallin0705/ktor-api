@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.update
 
-class PersistenceUserRepository: UserInterface {
+class PersistenceUserRepository : UserInterface {
 
     override suspend fun getAllUsers(): List<User> {
         return suspendTransaction {
@@ -21,11 +21,11 @@ class PersistenceUserRepository: UserInterface {
         }
     }
 
-    override suspend fun getUserByName(name: String): User? {
+    override suspend fun getUserByEmail(email: String): User? {
         return suspendTransaction {
             UserDao
                 .find {
-                    UserTable.name eq name
+                    UserTable.name eq email
                 }
                 .limit(1)
                 .map(::UserDaoToUser)
@@ -34,11 +34,11 @@ class PersistenceUserRepository: UserInterface {
     }
 
     override suspend fun postUser(user: User): Boolean {
-        val em = getUserByName(user.name)
+        val em = getUserByEmail(user.email)
         return if (em == null) {
             suspendTransaction {
                 UserDao.new {
-                    this.name = user.name
+                    this.email = user.email
                     this.password = PasswordHash.hash(user.password)
                     this.token = user.token
                 }
@@ -48,57 +48,99 @@ class PersistenceUserRepository: UserInterface {
             false
     }
 
-    override suspend fun updateUser(user: UpdateUser, name: String): Boolean {
+    override suspend fun updateUser(user: UpdateUser, email: String): Boolean {
         var num = 0
         try {
             suspendTransaction {
                 num = UserTable
-                    .update({ UserTable.name eq name }) { stm ->
-                        user.name?.let { stm[this.name] = it }
+                    .update({ UserTable.name eq email }) { stm ->
+                        user.email?.let { stm[this.name] = it }
                         user.password?.let { stm[password] = it }
                     }
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             false
         }
         return num == 1
     }
 
-    override suspend fun deleteUser(name: String): Boolean = suspendTransaction {
+    override suspend fun deleteUser(email: String): Boolean = suspendTransaction {
         val num = UserTable
-            .deleteWhere { UserTable.name eq name }
+            .deleteWhere { UserTable.name eq email }
         num == 1
     }
 
-    override suspend fun login(name: String, pass: String): Boolean {
-        val user = getUserByName(name)?: return false
+    override suspend fun login(email: String, pass: String): Boolean {
+        val user = getUserByEmail(email) ?: return false
 
-        return try{
+        return try {
             val posibleHash = PasswordHash.hash(pass)
             posibleHash == user.password
-        }catch (e: Exception){
+        } catch (e: Exception) {
             println("Error en la autenticación: ${e.localizedMessage}")
             false
         }
     }
 
     override suspend fun register(user: UpdateUser): User? {
+        return suspendTransaction {
+            try {
+                val hashedPassword = PasswordHash.hash(user.password!!)
 
-        return try {
-            suspendTransaction {
-                UserDao.new {
-                    this.name = user.name!!
-                    this.password = PasswordHash.hash(user.password!!)
-                    this.token = user.token!!
+                val newUser = UserDao.new {
+                    email = user.email!!
+                    password = hashedPassword
+                    token = ""
                 }
-            }.let {
-                UserDaoToUser(it)
+                commit()
+                UserDaoToUser(newUser)
+            } catch (e: Exception) {
+                rollback()
+                println("Error al registrar usuario: ${e.message}")
+                null
             }
-        }catch (e: Exception){
-            println("Error en el registro de empleado: ${e.localizedMessage}")
-            null
+        }
+    }
+
+
+    override suspend fun invalidateToken(email: String): Boolean {
+        return suspendTransaction {
+            val user = UserDao.find { UserTable.name eq email }.singleOrNull()
+            if (user != null) {
+                user.token = ""
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    override suspend fun getUserToken(email: String): String? {
+        return suspendTransaction {
+            UserDao.find { UserTable.name eq email }
+                .singleOrNull()?.token
+        }
+    }
+
+    override suspend fun updateUserToken(email: String, token: String): Boolean {
+        return suspendTransaction {
+            val user = UserDao.find { UserTable.name eq email }.singleOrNull()
+            if (user != null) {
+                user.token = token
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    override suspend fun validateToken(email: String, token: String): Boolean {
+        return suspendTransaction {
+            val storedToken = UserDao.find { UserTable.name eq email }
+                .singleOrNull()?.token
+            storedToken == token
         }
     }
 }

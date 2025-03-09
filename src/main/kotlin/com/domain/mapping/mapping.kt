@@ -10,7 +10,8 @@ import com.domain.models.UpdateUser
 fun UserDaoToUser(userDao: UserDao): User {
 
     val e = User(
-        userDao.name,
+        userDao.id.value,
+        userDao.email,
         userDao.password,
         userDao.token ?: "null"
     )
@@ -20,7 +21,8 @@ fun UserDaoToUser(userDao: UserDao): User {
 
 fun UpdateUserToUser(user: UpdateUser): User {
     var e = User(
-        user.name!!,
+        user.id,
+        user.email!!,
         user.password!!,
         user.token ?: ""
     )
@@ -37,5 +39,5 @@ fun RestaurantDaoToRestaurant(restaurantDao: RestaurantDao): Restaurant {
         restaurantDao.description ?: "",
         restaurantDao.image ?: ""
     )
-    return  e
+    return e
 }

@@ -1,7 +1,8 @@
-package com.domain.usecase.restaurant
+package com.domain.usecase
 
 import com.data.persistence.repository.PersistenceRestaurantRepository
 import com.domain.models.Restaurant
+import com.domain.usecase.restaurant.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -30,27 +31,33 @@ object ProviderRestaurantCase {
             emp
     }
 
-    suspend fun insertRestaurant(restaurant: Restaurant?) : Boolean {
-        if(restaurant == null) {
+    suspend fun insertRestaurant(restaurant: Restaurant?): Restaurant? {
+        if (restaurant == null) {
             logger.warn("No existe el restaurante para insertar")
-            null
+            return null
         }
-        val res = insertRestaurantUseCase(restaurant!!)
-        return if (!res){
-            logger.warn("No se ha insertado el restaurante")
-            false
+        return if (insertRestaurantUseCase(restaurant)) {
+            restaurant
         } else {
-             true
+            logger.warn("No se ha insertado el restaurante")
+            null
         }
     }
 
-    suspend fun updateRestaurant(restaurantId: Long? ,restaurant: Restaurant?) : Boolean {
+
+    suspend fun updateRestaurant(restaurantId: Long?, restaurant: Restaurant?): Restaurant? {
         if (restaurantId == null || restaurant == null) {
-            logger.warn("El restaurante o la id no existen")
-            return false
+            logger.warn("El restaurante o la ID no existen")
+            return null
         }
-        return updateRestaurantById(restaurantId, restaurant)
+        return if (updateRestaurantById(restaurantId, restaurant)) {
+            restaurant
+        } else {
+            logger.warn("No se pudo actualizar el restaurante")
+            null
+        }
     }
+
 
     suspend fun deleteRestaurant(restaurantId: Long?) : Boolean {
         return deleteRestaurantById(restaurantId)

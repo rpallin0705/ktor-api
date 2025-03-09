@@ -5,13 +5,13 @@ import com.domain.repository.UserInterface
 
 class UpdateUserUseCase (val repository : UserInterface){
     var updateUser: UpdateUser? = null
-    var name: String? = null
+    var email: String? = null
 
     suspend operator fun invoke() : Boolean {
-        return if (updateUser == null || name == null) {
+        return if (updateUser == null || email == null) {
             false
         }else{
-            return repository.updateUser(updateUser!!, name!!)
+            return repository.updateUser(updateUser!!, email!!)
         }
 
     }

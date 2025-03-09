@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
@@ -17,7 +16,6 @@ application {
 
 repositories {
     mavenCentral()
-
 }
 
 dependencies {
@@ -27,21 +25,12 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.netty)
     implementation(libs.logback.classic)
-  //  implementation(libs.ktor.server.config.yaml)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
     implementation("mysql:mysql-connector-java:8.0.33")
-
-
+    implementation("io.ktor:ktor-server-auth:3.0.3")
+    implementation("io.ktor:ktor-server-auth-jwt:3.0.3")
     implementation(libs.exposed.dao)
-    implementation(libs.mariadb)  // Usando la versión desde el archivo libs.versions.toml
-    implementation(libs.exposedjdbc)  // Usando la versión desde el archivo libs.versions.toml
-   // implementation("org.mariadb.jdbc:mariadb-java-client:2.7.3")
-
-
-
-    // MariaDB Driver
-   // implementation("org.mariadb.jdbc:mariadb-java-client:2.7.3")
-   // implementation("org.jetbrains.exposed:exposed-jdbc:0.56.0")
-
+    implementation(libs.mariadb)
+    implementation(libs.exposedjdbc)
 }

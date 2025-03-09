@@ -1,7 +1,10 @@
-package com.domain.usecase.user
+package com.domain.usecase
 
+import ValidateTokenUseCase
 import com.data.persistence.repository.PersistenceUserRepository
 import com.domain.models.*
+import com.domain.usecase.user.*
+import org.jetbrains.exposed.sql.resolveColumnType
 
 
 import org.slf4j.Logger
@@ -19,20 +22,21 @@ object ProviderUserCase {
     private val deleteUserUseCase = DeleteUserUseCase(repository)
     private val loginUseCase = LoginUseCase(repository)
     private val registerUseCase = RegisterUseCase(repository)
-
-
+    private val logoutUseCase = LogoutUseCase(repository)
+    private val isTokenValidUseCase = IsTokenValidUseCase(repository)
+    private val validateTokenUseCase = ValidateTokenUseCase(repository)
 
     suspend fun getAllUsers() = getAllUserUseCase()
 
-    suspend fun getUserByName(name : String) : User? {
-        if (name.isBlank()){
-            logger.warn("El name está vacío. No podemos buscar un empleado")
+    suspend fun getUserByEmail(email : String) : User? {
+        if (email.isBlank()){
+            logger.warn("El email está vacío. No podemos buscar un empleado")
             return null
         }
-        getUserByNameUseCase.name = name
+        getUserByNameUseCase.email = email
         val emp = getUserByNameUseCase()
         return if (emp == null) {
-            logger.warn("No se ha encontrado un empleado con ese $name.")
+            logger.warn("No se ha encontrado un empleado con ese $email.")
             null
         }else{
             emp
@@ -54,21 +58,26 @@ object ProviderUserCase {
         }
     }
 
-    suspend fun updateUser(updateUser: UpdateUser?, name : String) : Boolean{
+    suspend fun updateUser(updateUser: UpdateUser?, email : String) : Boolean{
         if (updateUser == null){
             logger.warn("No existen datos del empleado a actualizar")
             return false
         }
 
         updateUserUseCase.updateUser = updateUser
-        updateUserUseCase.name = name
+        updateUserUseCase.email = email
         return updateUserUseCase()
     }
 
-    suspend fun deleteUser(name : String) : Boolean{
-        deleteUserUseCase.name = name
+    suspend fun deleteUser(email : String) : Boolean{
+        deleteUserUseCase.email = email
         return deleteUserUseCase()
     }
 
-    suspend fun login(name: String?, pass: String?)  = loginUseCase(name, pass)
+    suspend fun login(email: String?, pass: String?)  = loginUseCase(email, pass)
+    suspend fun register (newUser: UpdateUser) = registerUseCase(newUser)
+    suspend fun logout(email: String): Boolean = logoutUseCase(email)
+    suspend fun isTokenValid(email: String, token: String) = isTokenValidUseCase(email, token)
+    suspend fun validateToken(email: String, token: String): Boolean = validateTokenUseCase(email, token)
+
 }
